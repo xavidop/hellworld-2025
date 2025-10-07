@@ -1,7 +1,7 @@
 version: 2.1
 
-# orbs:
-#   sonarcloud: sonarsource/sonarcloud@2.0.0
+orbs:
+  sonarcloud: sonarsource/sonarcloud@2.0.0
 
 jobs:
   test:
@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Run tests
           command: npm run test:coverage
-      # - sonarcloud/scan
+      - sonarcloud/scan
       - save_cache:
           paths:
             - node_modules
@@ -62,12 +62,12 @@ workflows:
   test-deploy:
     jobs:
       - test:
-          context: dev
+          context: SonarCloud
           filters:
             tags:
               only: /^v.*/
       - deploy:
-          context: dev
+          context: SonarCloud
           requires:
             - test
           filters:
